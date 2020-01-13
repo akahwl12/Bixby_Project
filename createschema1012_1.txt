@@ -1,0 +1,65 @@
+CREATE SCHEMA `kangho` DEFAULT CHARACTER SET utf8 ;
+use kangho;
+CREATE TABLE `kangho`.`user` (
+  `uid` VARCHAR(45) NOT NULL,
+  `uemail` VARCHAR(45) NOT NULL,
+  `uaddr` VARCHAR(100) NULL,
+  `uphone` VARCHAR(45) NULL,
+  `tflag` TINYINT NOT NULL,
+  PRIMARY KEY (`uid`));
+
+CREATE TABLE `kangho`.`travel` (
+  `tid` VARCHAR(45) NOT NULL,
+  `tname` VARCHAR(45) NOT NULL,
+  `startdate` VARCHAR(45) NOT NULL,
+  `enddate` VARCHAR(45) NULL,
+  `uid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`tid`),
+  INDEX `uid_idx` (`uid` ASC) VISIBLE,
+  CONSTRAINT `uid`
+    FOREIGN KEY (`uid`)
+    REFERENCES `kangho`.`user` (`uid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+drop table kangho.footprint;
+CREATE TABLE `kangho`.`footprint` (
+  `fid` VARCHAR(45) NOT NULL,
+  `fname` VARCHAR(45) NOT NULL,
+  `fdate` VARCHAR(45) NOT NULL,
+  `flocation` VARCHAR(45) NULL,
+  `ftid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`fid`),
+  INDEX `tid_idx` (`ftid` ASC) VISIBLE,
+  CONSTRAINT `ftid`
+    FOREIGN KEY (`ftid`)
+    REFERENCES `kangho`.`travel` (`tid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+CREATE TABLE `kangho`.`diary` (
+  `oid` VARCHAR(45) NOT NULL,
+  `odate` VARCHAR(45) NOT NULL,
+  `olocation` VARCHAR(100) NOT NULL,
+  `odiary` VARCHAR(21000) NOT NULL,
+  `otid` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`oid`),
+  INDEX `tid_idx` (`otid` ASC) VISIBLE,
+  CONSTRAINT `otid`
+    FOREIGN KEY (`otid`)
+    REFERENCES `kangho`.`travel` (`tid`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+show tables;
+select * from diary;
+select * from footprint;
+select * from travel;
+select * from user;
